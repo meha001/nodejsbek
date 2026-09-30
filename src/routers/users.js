@@ -1,21 +1,13 @@
 import { Router } from 'express';
-import User from '../models/Users.js';
+import * as usersController from '../controllers/usersController.js';
 
 const router = Router();
 
-router.get('/search', (req, res) => {
-  const { q } = req.query;
-  if (q === undefined || q === '') {
-    return res.status(400).json({ error: 'query parameter "q" is required' });
-  }
-  res.json({ q });
-});
-
-router.get('/', (req, res) => res.json(User.all()));
-
-router.get('/:id', (req, res) => {
-  const item = User.find(req.params.id);
-  item ? res.json(item) : res.status(404).json({ error: 'not found' });
-});
+router.get('/search', usersController.search);
+router.get('/', usersController.getAll);
+router.get('/:id', usersController.getById);
+router.post('/', usersController.create);
+router.put('/:id', usersController.update);
+router.delete('/:id', usersController.remove);
 
 export default router;

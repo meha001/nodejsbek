@@ -1,30 +1,8 @@
-const db = [
-  { id: 1, name: 'Ivan' },
-  { id: 2, name: 'Vlad' },
-];
+import { DataTypes } from 'sequelize';
+import db from '../config/database.js';
 
-let seq = -9999999999999999
-for (let i = 0; i < db.length; i++){
-    if (db[i].id > seq){
-        seq = db[i].id;
-    }
-}
-export default class User {
-  static all() { return db; }
-  static find(id) { return db.find(x => x.id === +id); }
-  static create(data) {
-    const item = { id: seq++, ...data };
-    db.push(item);
-    return item;
-  }
-  static update(id, data) {
-    const i = this.find(id);
-    if (!i) return null;
-    Object.assign(i, data, { id: i.id });
-    return i;
-  }
-  static remove(id) {
-    const i = db.findIndex(x => x.id === +id);
-    return i === -1 ? null : db.splice(i, 1)[0];
-  }
-}
+export default db.define('User', {
+    name: DataTypes.STRING,
+    email: { type: DataTypes.STRING, unique: true },
+    password: DataTypes.STRING
+});
