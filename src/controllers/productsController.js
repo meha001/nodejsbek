@@ -1,6 +1,6 @@
 import * as productsService from '../services/productsService.js';
 
-export const getAll = (res) => {
+export const getAll = (req, res) => {
     res.json(productsService.getAllProducts());
 };
 

@@ -1,8 +1,11 @@
 import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import usersRouter from './routers/users.js';
 import productsRouter from './routers/products.js';
 import ordersRouter from './routers/orders.js';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 app.use((req, res, next) => {
@@ -11,6 +14,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.post('/echo', (req, res) => {
     res.json(req.body);
@@ -40,4 +44,12 @@ process.on('unhandledRejection', (err) => {
     console.error('UNHANDLED:', err);
 });
 
-app.listen(3000, () => console.log('http://localhost:3000'));
+const PORT = process.env.PORT || 3001;
+const server = app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`Порт ${PORT} уже занят. Закройте другой сервер или: $env:PORT=3001; npm start`);
+        process.exit(1);
+    }
+    throw err;
+});
