@@ -23,6 +23,8 @@ export default class Product {
         return item;
     }
 
+
+    
     static remove(id) {
         const i = db.findIndex(x => x.id === +id);
         return i === -1 ? null : db.splice(i, 1)[0];

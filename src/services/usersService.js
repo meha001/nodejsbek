@@ -8,6 +8,8 @@ export function getUserById(id) {
     return User.find(id);
 }
 
+
+
 export function searchUsers(q) {
     const list = User.all();
     const lower = q.toLowerCase();
